@@ -1,22 +1,17 @@
 const state = {
-    temp: 0,
+    temp: 59,
     city: 'chicago'
 };
 
 changeCityWeather = () => {
-    // const inputCity = document.getElementById.textContent("temp-title-city")
+
     axios
         .get("http://localhost:5000/location", {
             params: {
-                // key: "pk.550a637037518ca239852f3d8db26c66",
                 q: state.city,
-
-
-                // q: inputCity,
             },
         })
         .then((response) => {
-            // console.log(response.data);
             let lat = response.data[0].lat;
             let lon = response.data[0].lon;
             console.log("success")
@@ -31,7 +26,6 @@ changeCityWeather = () => {
                 .then((response) => {
                     const temperatureK = response.data.current.temp;
 
-                    // state.temp = response // fix this
                     const degree = document.getElementById("temp-degree");
                     degree.textContent = `${temperatureK}`;
                     state.temp = temperatureK;
@@ -41,10 +35,8 @@ changeCityWeather = () => {
                 .catch((error) => {
                     console.log("error", error.response.data);
                 });
-        }
-        )
+        })
         .catch((error) => {
-            // console.log("error");
             console.log("error", error.response.data)
         });
 
@@ -86,22 +78,41 @@ const changeDegreeColor = () => {
     document.getElementById("landscape-image").textContent = landscape
     document.getElementById("land-img").setAttribute('src', landImg)
 
+}
+
+const changeSky = () => {
+
+    let sky = document.getElementById("label-sky").value
+    let skyDisplay = ""
+    console.log(sky)
+
+    if (sky == "Sunny") {
+        skyDisplay = "🌞🌻🌞🌻🌞🌻🌞🌻"
+    }
+    else if (sky == "Cloudly") {
+        skyDisplay = "🌥🌥⛅️🌥🌥⛅️🌥🌥"
+    }
+    else if (sky == "Rainy") {
+        skyDisplay = "🌧🐶🐱🐶🐱🐶🐱🌧"
+    }
+    else if (sky = "Snowy") {
+        skyDisplay = "⛄️⛄️⛄️⛄️⛄️⛄️⛄️⛄️⛄️"
+    }
+    document.getElementById("sky-image").textContent = skyDisplay;
 
 }
 
 const changeCityName = () => {
-    const cityName = document.getElementById("temp-title-city"); //TEMPERATURE
-    const newCity = document.getElementById("city-input").value; //input city 
+    const cityName = document.getElementById("temp-title-city");
+    const newCity = document.getElementById("city-input").value;
     cityName.textContent = `${newCity}`
     state.city = newCity
-
-    // cityName.append(newCity)
 }
 
 const changeTempUp = () => {
-    state.temp += 1;//temp goes up one 
-    const button = document.getElementById("temp-degree"); //access what actually changes on web
-    button.textContent = state.temp // change the content 
+    state.temp += 1;
+    const button = document.getElementById("temp-degree");
+    button.textContent = state.temp
     changeDegreeColor();
 }
 
@@ -113,7 +124,17 @@ const changeTempDown = () => {
     changeDegreeColor();
 }
 
-const updateTemp = () => { }
+const reset = () => {
+    state.temp = 59
+    state.city = "chicago"
+    document.getElementById("temp-degree").textContent = 59
+    document.getElementById("temp-title-city").textContent = "chicago"
+    document.getElementById("land-img").setAttribute('src', '/assets/images/winter.jpeg')
+
+
+
+}
+
 
 const registerEventHandlers = () => {
     document.getElementById("up-button").addEventListener("click", changeTempUp);
@@ -123,6 +144,10 @@ const registerEventHandlers = () => {
     document.getElementById("city-input").addEventListener('input', changeCityName);
 
     document.getElementById("update-city-button").addEventListener('click', changeCityWeather);
+
+    document.getElementById("label-sky").addEventListener("change", changeSky);
+
+    document.getElementById("reset-button").addEventListener("click", reset);
 }
 
 registerEventHandlers();
