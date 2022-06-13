@@ -1,3 +1,5 @@
+// import 'regenerator-runtime/runtime';
+// import axios from 'axios';
 const state = {
     temp: 59,
     city: 'chicago'
