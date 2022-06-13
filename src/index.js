@@ -120,7 +120,6 @@ const changeTempDown = () => {
     state.temp -= 1;
     const button = document.getElementById("temp-degree");
     button.textContent = state.temp
-
     changeDegreeColor();
 }
 

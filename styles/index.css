@@ -5,39 +5,48 @@
 
 #weatherreport-title {
     text-align: center;
+    max-width: 900px;
 }
 
 #temp-container,
-#landscape-container {
+#landscape-container,
+#city-container,
+#sky-container {
 
     max-width: 900px;
     margin: 20px;
     display: grid;
     grid-template-columns: 1fr;
     grid-auto-rows: minmax(100px, auto);
-    border: 2px solid black;
+    border: 3px solid black;
     text-align: center;
+    border-radius: 3%;
 
 }
 
-#city-container {
-    max-width: 900px;
-    margin: 20px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-    border: 2px solid black;
-    text-align: center;
+img {
+    width: 100%;
+    height: 400px;
+
 }
 
-#city-title,
-#city-input {
 
-    grid-row-start: 2;
+.city-info,
+#city-input,
+#label-sky {
+    font-size: 20px;
+    margin: auto;
+    width: 50%;
+    height: 50px;
+
 
 }
 
 #temp-degree {
     color: black;
-    font-size: 40px;
+    font-size: 70px;
+}
+
+button {
+    cursor: pointer;
 }
