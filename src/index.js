@@ -1,12 +1,54 @@
 const state = {
-    temp: 50
+    temp: 0,
+    city: 'chicago'
 };
 
-const assignTemp = () => {
-    const temperature = document.getElementById("temp-degree")
-    temperature.textContent = `${state.temp}`
+changeCityWeather = () => {
+    // const inputCity = document.getElementById.textContent("temp-title-city")
+    axios
+        .get("http://localhost:5000/location", {
+            params: {
+                // key: "pk.550a637037518ca239852f3d8db26c66",
+                q: state.city,
 
-}
+
+                // q: inputCity,
+            },
+        })
+        .then((response) => {
+            // console.log(response.data);
+            let lat = response.data[0].lat;
+            let lon = response.data[0].lon;
+            console.log("success")
+            axios
+                .get('http://localhost:5000/weather', {
+                    params: {
+                        lat: lat,
+                        lon: lon
+
+                    },
+                })
+                .then((response) => {
+                    const temperatureK = response.data.current.temp;
+
+                    // state.temp = response // fix this
+                    const degree = document.getElementById("temp-degree");
+                    degree.textContent = `${temperatureK}`;
+                    state.temp = temperatureK;
+                    changeDegreeColor();
+
+                })
+                .catch((error) => {
+                    console.log("error", error.response.data);
+                });
+        }
+        )
+        .catch((error) => {
+            // console.log("error");
+            console.log("error", error.response.data)
+        });
+
+};
 
 const changeDegreeColor = () => {
     const degree = document.getElementById("temp-degree");
@@ -17,8 +59,9 @@ const changeDegreeColor = () => {
     let landImg = ""
 
 
-    if (state.temp < 49) {
+    if (state.temp <= 49) {
         color = "teal";
+        landImg = "/assets/images/winter.jpeg"
     }
     else if (state.temp > 49 && state.temp < 60) {
         color = "green";
@@ -47,10 +90,10 @@ const changeDegreeColor = () => {
 }
 
 const changeCityName = () => {
-    const cityName = document.getElementById("temp-title"); //TEMPERATURE
-
+    const cityName = document.getElementById("temp-title-city"); //TEMPERATURE
     const newCity = document.getElementById("city-input").value; //input city 
-    cityName.textContent = `Temperature for ${newCity}`
+    cityName.textContent = `${newCity}`
+    state.city = newCity
 
     // cityName.append(newCity)
 }
@@ -78,6 +121,8 @@ const registerEventHandlers = () => {
     document.getElementById("down-button").addEventListener("click", changeTempDown);
 
     document.getElementById("city-input").addEventListener('input', changeCityName);
+
+    document.getElementById("update-city-button").addEventListener('click', changeCityWeather);
 }
 
 registerEventHandlers();
